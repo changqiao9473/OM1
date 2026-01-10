@@ -20,7 +20,11 @@ class StatusReporter(FuserInput[SensorConfig, Optional[str]]):
         
         # Get API key from environment or config
         import os
-        api_key = os.getenv("OM_API_KEY", "enter_your_api_key")
+        api_key = os.getenv("OM_API_KEY")
+        
+        if not api_key:
+            logging.error("OM_API_KEY environment variable is required for StatusReporter")
+            return
         
         # Initialize status provider
         self.status_provider = TeleopsStatusProvider(api_key=api_key)
